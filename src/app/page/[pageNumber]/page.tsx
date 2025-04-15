@@ -1,30 +1,27 @@
 import { fetchPosts } from "@/lib/api";
 import PaginatedBlogPostList from "../../components/ui/PaginatedBlogPosts";
 import Pagination from "../../components/ui/Pagination";
+import CategoriesList from "../../components/ui/CategoriesList";
 
 export const revalidate = 60;
 
-export async function generateStaticParams() {
-  const { totalPages } = await fetchPosts();
-  return Array.from({ length: totalPages }, (_, i) => ({
-    pageNumber: (i + 1).toString(),
-  }));
+interface PageProps {
+  params: { slug?: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function PaginatedPage({
-  params,
-}: {
-  params: Promise<{ pageNumber: string }>;
-}) {
-  const resolvedParams = await params;
-  const page = parseInt(resolvedParams.pageNumber, 10);
-
+export default async function HomePage({ params, searchParams }: PageProps) {
+  const page = searchParams.page ? Number(searchParams.page) : 1;
   const { posts, totalPages } = await fetchPosts(page);
 
   return (
     <div className="container mx-auto max-w-6xl">
+      <CategoriesList currentCategory={params?.slug} />
       <PaginatedBlogPostList posts={posts} />
-      <Pagination currentPage={page} totalPages={totalPages} />
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+      />
     </div>
   );
 }
