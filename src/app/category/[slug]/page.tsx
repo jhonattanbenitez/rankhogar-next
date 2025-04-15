@@ -7,36 +7,44 @@ import { notFound } from "next/navigation";
 
 export const revalidate = 60;
 
-    interface Category {
-      id: number;
-      name: string;
-      slug: string;
-      count: number;
-      description?: string;
-    }
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+  description?: string;
+}
 
 export async function generateStaticParams() {
   const categories = await fetchWPCategories();
-return categories.map((category: Category): { slug: string } => ({
+  return categories.map((category: Category) => ({
     slug: category.slug,
-}));
+  }));
+}
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function CategoryPage({
   params,
   searchParams,
-}: {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  // Safely extract page number
-  const pageParam = Array.isArray(searchParams.page)
-    ? searchParams.page[0]
-    : searchParams.page;
-  const page = pageParam ? parseInt(pageParam as string) : 1;
+}: PageProps) {
+  // Await the dynamic APIs first
+  const [resolvedParams, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
 
-  // Fetch data
-  const { posts, totalPages } = await fetchPosts(page, 6, params.slug);
+  // Safely extract page number
+  const pageParam = Array.isArray(resolvedSearchParams.page)
+    ? resolvedSearchParams.page[0]
+    : resolvedSearchParams.page;
+  const page = pageParam ? Number(pageParam) : 1;
+
+  // Fetch data with resolved slug
+  const { posts, totalPages } = await fetchPosts(page, 6, resolvedParams.slug);
 
   if (!posts || posts.length === 0) {
     return notFound();
@@ -44,12 +52,12 @@ export default async function CategoryPage({
 
   return (
     <div className="container mx-auto max-w-6xl">
-      <CategoriesList currentCategory={params.slug} />
+      <CategoriesList currentCategory={resolvedParams.slug} />
       <PaginatedBlogPostList posts={posts} />
       <Pagination
         currentPage={page}
         totalPages={totalPages}
-        basePath={`/category/${params.slug}`}
+        basePath={`/category/${resolvedParams.slug}`}
       />
     </div>
   );

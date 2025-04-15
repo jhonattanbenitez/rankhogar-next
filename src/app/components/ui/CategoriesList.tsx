@@ -31,11 +31,11 @@ export default async function CategoriesList({
       <div className="bg-white p-6 rounded-lg shadow">
         {/* Dynamic title and description */}
         <h2 className="text-2xl font-bold mb-6">
-          {currentCategoryData?.name || "Positively Artificial"}
+          {currentCategoryData?.name || "Todos los artículos"}
         </h2>
         <p className="text-gray-600 mb-6">
           {currentCategoryData?.description ||
-            "Stay informed on the latest in AI technology with our focus on uplifting and positive stories. Learn about the advancements and innovations in artificial intelligence that are driving progress and making the world a better place."}
+            "Explora todo nuestro contenido en un solo lugar. Aquí encontrarás todos los artículos publicados en el sitio, desde consejos útiles hasta reseñas de productos y novedades del hogar. ¡Perfecto para descubrir temas que te interesan!"}
         </p>
 
         {/* Categories menu with "All" option */}
@@ -46,7 +46,7 @@ export default async function CategoriesList({
               !currentCategory ? "text-blue-600 font-bold" : ""
             }`}
           >
-            All
+            Todos los artículos
           </Link>
           {activeCategories.map((category) => (
             <Link
