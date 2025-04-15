@@ -8,7 +8,7 @@ export default async function HomePage() {
   const { posts, totalPages } = await fetchPosts(1);
 
   return (
-    <div className="space-y-12">
+    <div className="container mx-auto max-w-6xl">
       <PaginatedBlogPostList posts={posts} />
       <Pagination currentPage={1} totalPages={totalPages} />
     </div>

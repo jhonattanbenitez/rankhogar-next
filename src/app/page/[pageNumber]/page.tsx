@@ -22,7 +22,7 @@ export default async function PaginatedPage({
   const { posts, totalPages } = await fetchPosts(page);
 
   return (
-    <div className="space-y-12">
+    <div className="container mx-auto max-w-6xl">
       <PaginatedBlogPostList posts={posts} />
       <Pagination currentPage={page} totalPages={totalPages} />
     </div>

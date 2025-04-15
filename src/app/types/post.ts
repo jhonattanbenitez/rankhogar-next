@@ -1,6 +1,7 @@
 export type WPPost = {
   id: number;
   slug: string;
+  date: string;
   title: { rendered: string };
   excerpt: { rendered: string };
   _embedded?: {

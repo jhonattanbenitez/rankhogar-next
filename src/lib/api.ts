@@ -4,7 +4,7 @@ export async function fetchPosts(
   page = 1,
   perPage = 6
 ): Promise<{ posts: WPPost[]; totalPages: number }> {
-  const url = `${process.env.NEXT_PUBLIC_BLOG_CMS_URL}?_embed=true&page=${page}&per_page=${perPage}`;
+  const url = `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}wp-json/wp/v2/posts?_embed=true&page=${page}&per_page=${perPage}`;
 
   const res = await fetch(url);
 
