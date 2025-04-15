@@ -1,9 +1,16 @@
-import BlogPostList from "./components/ui/BlogPostList";
+import { fetchPosts } from "@/lib/api";
+import PaginatedBlogPostList from "../app/components/ui/PaginatedBlogPosts";
+import Pagination from "../app/components/ui/Pagination";
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const { posts, totalPages } = await fetchPosts(1);
+
   return (
-    <>
-     <BlogPostList />
-    </>
+    <div className="space-y-12">
+      <PaginatedBlogPostList posts={posts} />
+      <Pagination currentPage={1} totalPages={totalPages} />
+    </div>
   );
 }
