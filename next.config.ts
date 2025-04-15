@@ -3,7 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["cms.rankhogar.com.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cms.rankhogar.com.co",
+      },
+    ],
   },
 };
 
