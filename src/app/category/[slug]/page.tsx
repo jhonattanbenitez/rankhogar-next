@@ -1,23 +1,16 @@
 // app/category/[slug]/page.tsx
-import { fetchPosts, fetchWPCategories } from "@/lib/api";
+import { fetchPosts, fetchWPCategories, WPCategory } from "@/lib/api";
 import PaginatedBlogPostList from "../../components/ui/PaginatedBlogPosts";
 import Pagination from "../../components/ui/Pagination";
 import CategoriesList from "../../components/ui/CategoriesList";
+import { FullWidthHeader } from "../../components/ui/FullWidthHeader";
 import { notFound } from "next/navigation";
 
 export const revalidate = 60;
 
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-  count: number;
-  description?: string;
-}
-
 export async function generateStaticParams() {
   const categories = await fetchWPCategories();
-  return categories.map((category: Category) => ({
+  return categories.map((category: WPCategory) => ({
     slug: category.slug,
   }));
 }
@@ -43,15 +36,27 @@ export default async function CategoryPage({
     : resolvedSearchParams.page;
   const page = pageParam ? Number(pageParam) : 1;
 
-  // Fetch data with resolved slug
-  const { posts, totalPages } = await fetchPosts(page, 6, resolvedParams.slug);
+  // Fetch all needed data
+  const [{ posts, totalPages }, categories] = await Promise.all([
+    fetchPosts(page, 6, resolvedParams.slug),
+    fetchWPCategories(),
+  ]);
 
   if (!posts || posts.length === 0) {
     return notFound();
   }
 
+  // Find current category data
+
+
   return (
     <div className="container mx-auto max-w-6xl">
+      <FullWidthHeader
+
+        categories={categories}
+        currentCategory={resolvedParams.slug}
+        className="bg-gradient-to-r from-teal-50 to-blue-50"
+      />
       <CategoriesList currentCategory={resolvedParams.slug} />
       <PaginatedBlogPostList posts={posts} />
       <Pagination

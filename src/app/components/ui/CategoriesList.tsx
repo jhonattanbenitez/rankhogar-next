@@ -28,13 +28,13 @@ export default async function CategoriesList({
       : null;
 
     return (
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg ">
         {/* Dynamic title and description */}
         <h2 className="text-2xl font-bold mb-6">
-          {currentCategoryData?.name || "Todos los artículos"}
+          {currentCategoryData?.name ?? "Todos los artículos"}
         </h2>
         <p className="text-gray-600 mb-6">
-          {currentCategoryData?.description ||
+          {currentCategoryData?.description ??
             "Explora todo nuestro contenido en un solo lugar. Aquí encontrarás todos los artículos publicados en el sitio, desde consejos útiles hasta reseñas de productos y novedades del hogar. ¡Perfecto para descubrir temas que te interesan!"}
         </p>
 
