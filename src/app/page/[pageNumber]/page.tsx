@@ -11,13 +11,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function PaginatedPage(props: {
-  params: { pageNumber: string };
+export default async function PaginatedPage({
+  params,
+}: {
+  params: Promise<{ pageNumber: string }>;
 }) {
-  // Explicitly await the resolution of params
-  const { params } = props;
-  const pageNumber = params.pageNumber;
-  const page = parseInt(pageNumber, 10);
+  const resolvedParams = await params;
+  const page = parseInt(resolvedParams.pageNumber, 10);
 
   const { posts, totalPages } = await fetchPosts(page);
 
