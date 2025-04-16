@@ -84,4 +84,22 @@ export async function fetchPostBySlug(slug: string): Promise<WPPost | null> {
   }
 }
 
+export async function fetchPageBySlug(slug: string) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/wp-json/wp/v2/pages?slug=${slug}&_embed=true`,
+      { next: { revalidate: 60 } }
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch page. Status: ${res.status}`);
+    }
+
+    const pages = await res.json();
+    return pages[0] ?? null;
+  } catch (error) {
+    console.error("Error fetching page:", error);
+    return null;
+  }
+}
 
