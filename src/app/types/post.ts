@@ -1,15 +1,20 @@
 export type WPPost = {
   id: number;
-  slug: string;
   date: string;
-  title: { rendered: string };
-  excerpt: { rendered: string };
+  slug: string;
+  excerpt: {
+    rendered: string;
+  };
+  title: {
+    rendered: string;
+  };
+  content: {
+    rendered: string;
+  };
   _embedded?: {
-    "wp:featuredmedia"?: [
-      {
-        source_url: string;
-        alt_text: string;
-      }
-    ];
+    "wp:featuredmedia"?: Array<{
+      source_url: string;
+      alt_text: string;
+    }>;
   };
 };

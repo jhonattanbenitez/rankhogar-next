@@ -11,7 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import React from "react";
 import { usePathname } from "next/navigation";
-import { WPCategory } from "@/lib/api";
+import { WPCategory } from "../../types/category";
 
 interface BreadcrumbProps {
   label: string;

@@ -42,7 +42,7 @@ export async function fetchCategoryBySlug(slug: string) {
     }
 
     const categories = await res.json();
-    return categories[0] || null;
+    return categories[0] ?? null;
   } catch (error) {
     console.error("Error fetching category:", error);
     return null;
@@ -67,10 +67,21 @@ export async function fetchWPCategories() {
   }
 }
 
-export type WPCategory = {
-  id: number;
-  name: string;
-  slug: string;
-  count: number;
-  description?: string;
-};
+
+export async function fetchPostBySlug(slug: string): Promise<WPPost | null> {
+  try {
+    console.log("Fetching post by slug:", slug);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/wp-json/wp/v2/posts?slug=${slug}&_embed=true`,
+      { next: { revalidate: 60 } }
+    );
+
+    const data = await res.json();
+    return data[0] ?? null;
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return null;
+  }
+}
+
+
