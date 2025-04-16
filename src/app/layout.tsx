@@ -3,6 +3,7 @@ import "./globals.css";
 import Logo from "./components/ui/Logo";
 import Footer from "./components/Footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
 
 
 
@@ -65,6 +66,7 @@ export default function RootLayout({
         <Footer />
       </body>
       <GoogleAnalytics gaId="G-KM496921GW" />
+      <Analytics />
     </html>
   );
 }
