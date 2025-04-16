@@ -1,3 +1,4 @@
+// app/post/[slug]/page.tsx
 import { fetchPostBySlug } from "@/lib/api";
 import { notFound } from "next/navigation";
 import PostContent from "../../components/ui/PostContent";
@@ -9,15 +10,15 @@ export const revalidate = 60;
 export default async function SinglePostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  // Debug: Log the incoming slug
-  console.log("Fetching post with slug:", params.slug);
+  // First await the params promise
+  const { slug } = await params;
 
-  const post = await fetchPostBySlug(params.slug);
+  const post = await fetchPostBySlug(slug);
 
   if (!post) {
-    console.error("Post not found for slug:", params.slug);
+    console.error("Post not found for slug:", slug);
     return notFound();
   }
 
@@ -26,7 +27,7 @@ export default async function SinglePostPage({
       <article className="prose lg:prose-xl mx-auto">
         <header className="mb-12">
           <h1 className="text-3xl md:text-4xl font-bold">
-            {typeof post.title === 'object' ? post.title.rendered : post.title}
+            {typeof post.title === "object" ? post.title.rendered : post.title}
           </h1>
           <div className="text-gray-600 mt-2">
             Publicado el {formatFullDate(new Date(post.date))}
@@ -45,7 +46,13 @@ export default async function SinglePostPage({
           </div>
         )}
 
-        <PostContent content={typeof post.content === 'object' ? post.content.rendered : post.content} />
+        <PostContent
+          content={
+            typeof post.content === "object"
+              ? post.content.rendered
+              : post.content
+          }
+        />
       </article>
     </div>
   );
