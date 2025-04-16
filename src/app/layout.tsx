@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Logo from "./components/ui/Logo";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Consejos y Reseñas para tu Hogar | RankHogar",
@@ -61,10 +52,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+ 
+        <header className="border-b py-4 px-6 bg-white shadow-sm">
+          <div className="container flex items-center justify-between ">
+            <Logo  className="m-0 m-auto"/>
+         </div>
+        </header>
+
+        <main>{children}</main>
       </body>
     </html>
   );
