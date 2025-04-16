@@ -2,6 +2,7 @@ export type WPPost = {
   id: number;
   date: string;
   slug: string;
+  categories?: number[];
   excerpt: {
     rendered: string;
   };

@@ -27,9 +27,7 @@ export const CategoryBreadcrumb: React.FC<{
   const isCategoryPage = pathname.startsWith("/category/");
 
   // Build breadcrumb items
-  const breadcrumbItems: BreadcrumbProps[] = [
-    { label: "Inicio", href: "/" },
-      ];
+  const breadcrumbItems: BreadcrumbProps[] = [{ label: "Inicio", href: "/" }];
 
   if (isCategoryPage && currentCategory) {
     const category = categories.find((cat) => cat.slug === currentCategory);
@@ -47,7 +45,8 @@ export const CategoryBreadcrumb: React.FC<{
         {breadcrumbItems.map((crumb, index) => (
           <React.Fragment key={index}>
             <BreadcrumbItem className="text-inherit">
-              {index === breadcrumbItems.length - 1 ? (
+              {/* Always make "Inicio" clickable, even if it's the only item */}
+              {index === breadcrumbItems.length - 1 && index !== 0 ? (
                 <BreadcrumbPage className="text-inherit line-clamp-1">
                   {crumb.label}
                 </BreadcrumbPage>
@@ -69,11 +68,10 @@ export const CategoryBreadcrumb: React.FC<{
 };
 
 export const FullWidthHeader: React.FC<{
- 
   categories?: WPCategory[];
   currentCategory?: string;
   className?: string;
-}> = ({  categories, currentCategory, className }) => {
+}> = ({ categories, currentCategory, className }) => {
   return (
     <div className={cn("mt-4 pb-4 lg:pb-8 pt-4 rounded-2xl", className)}>
       <div className="container mx-auto px-4 max-w-6xl">
@@ -83,8 +81,7 @@ export const FullWidthHeader: React.FC<{
             currentCategory={currentCategory}
           />
         )}
-   
-         </div>
+      </div>
     </div>
   );
 };
