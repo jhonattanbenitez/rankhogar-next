@@ -20,13 +20,7 @@ export default function Footer() {
             >
               Sobre nosotros
             </Link>
-            <Link
-              href="/contact"
-              className="hover:text-blue-600 transition-colors"
-            >
-              Contacto
-            </Link>
-            <Link
+                     <Link
               href="/privacy-policy"
               className="hover:text-blue-600 transition-colors"
             >
