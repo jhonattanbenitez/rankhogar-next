@@ -55,13 +55,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
- 
         <header className="border-b py-4 px-6 bg-white shadow-sm">
           <div className="container flex items-center justify-between ">
-            <Logo variant="black" className="m-0 m-auto"/>
-         </div>
+            <Logo variant="black" className="m-auto" />
+          </div>
         </header>
-
         <main>{children}</main>
         <Footer />
       </body>
