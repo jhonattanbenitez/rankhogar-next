@@ -11,7 +11,7 @@ export default function Logo({ className = "", variant = "black" }: LogoProps) {
 
   return (
     <Link href="/" className={`flex items-center gap-2 ${className}`}>
-      <Image src={logoSrc} alt="Logo" width={300} height={40} priority />
+      <Image src={logoSrc} alt="Logo" width={300} height={100} priority style={{height: 'auto'}} />
     </Link>
   );
 }

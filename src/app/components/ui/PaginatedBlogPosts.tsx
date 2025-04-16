@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function PaginatedBlogPostList({ posts }: { posts: WPPost[] }) {
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 px-4">
-      {posts?.map((post) => (
+      {posts?.map((post, index) => (
         <div
           key={post.id}
           className="flex flex-col justify-between h-full rounded-lg border p-4 shadow-sm"
@@ -24,6 +24,9 @@ export default function PaginatedBlogPostList({ posts }: { posts: WPPost[] }) {
                   fill
                   className="object-cover rounded-md"
                   sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={index === 0} 
+                  placeholder="blur" // 
+                  blurDataURL="/placeholder.png" 
                 />
               )}
             </div>
