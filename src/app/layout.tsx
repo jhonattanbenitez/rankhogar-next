@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Logo from "./components/ui/Logo";
+import Footer from "./components/Footer";
+
 
 
 export const metadata: Metadata = {
@@ -56,11 +58,12 @@ export default function RootLayout({
  
         <header className="border-b py-4 px-6 bg-white shadow-sm">
           <div className="container flex items-center justify-between ">
-            <Logo  className="m-0 m-auto"/>
+            <Logo variant="black" className="m-0 m-auto"/>
          </div>
         </header>
 
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

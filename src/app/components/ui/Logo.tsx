@@ -1,22 +1,17 @@
-// components/Logo.tsx
 import Link from "next/link";
 import Image from "next/image";
 
 interface LogoProps {
   className?: string;
+  variant?: "black" | "white";
 }
 
-export default function Logo({ className = "", }: LogoProps) {
+export default function Logo({ className = "", variant = "black" }: LogoProps) {
+  const logoSrc = variant === "white" ? "/logo-white.png" : "/logo-black.png";
+
   return (
     <Link href="/" className={`flex items-center gap-2 ${className}`}>
-      <Image
-        src="/logo.png" 
-        alt="Logo"
-        width={300}
-        height={40}
-        priority
-      />
-     
+      <Image src={logoSrc} alt="Logo" width={300} height={40} priority />
     </Link>
   );
 }
