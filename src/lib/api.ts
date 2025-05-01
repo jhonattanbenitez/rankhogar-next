@@ -70,7 +70,6 @@ export async function fetchWPCategories() {
 
 export async function fetchPostBySlug(slug: string): Promise<WPPost | null> {
   try {
-    console.log("Fetching post by slug:", slug);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BLOG_BASE_URL}/wp-json/wp/v2/posts?slug=${slug}&_embed=true`,
       { next: { revalidate: 60 } }

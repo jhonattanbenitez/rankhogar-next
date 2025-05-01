@@ -6,18 +6,48 @@ import { formatFullDate } from "@/lib/date";
 import Image from "next/image";
 import { FullWidthHeader } from "@/app/components/ui/FullWidthHeader";
 import { WPCategory } from "../../types/category";
+import { Metadata } from "next";
 
 export const revalidate = 60;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const { slug } = await Promise.resolve(params); 
+
+  const post = await fetchPostBySlug(slug);
+  if (!post) return {};
+
+  return {
+    title: post.title?.rendered || "Artículo",
+    description: post.excerpt?.rendered.replace(/<[^>]+>/g, "") || "",
+    openGraph: {
+      title: post.title?.rendered,
+      description: post.excerpt?.rendered.replace(/<[^>]+>/g, ""),
+      type: "article",
+      images: [
+        {
+          url:
+            post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ??
+            "/default-og-image.jpg",
+        },
+      ],
+    },
+  };
+}
+
 
 export default async function SinglePostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  // First await the params promise
-  const { slug } = await params;
 
-  // Fetch post and categories in parallel
+  const { slug } = await Promise.resolve(params);
+
+
   const [post, categories] = await Promise.all([
     fetchPostBySlug(slug),
     fetchWPCategories(),
@@ -28,7 +58,6 @@ export default async function SinglePostPage({
     return notFound();
   }
 
-  // Find the primary category
   const primaryCategory = categories.find((cat: WPCategory) => 
     post.categories?.includes(cat.id)
   );
