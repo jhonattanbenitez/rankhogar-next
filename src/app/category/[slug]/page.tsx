@@ -6,6 +6,8 @@ import CategoriesList from "../../components/ui/CategoriesList";
 import { FullWidthHeader } from "../../components/ui/FullWidthHeader";
 import { notFound } from "next/navigation";
 import { WPCategory } from "@/app/types/category";
+import { Metadata } from "next";
+import { headers } from "next/headers";
 
 export const revalidate = 60;
 
@@ -14,6 +16,58 @@ export async function generateStaticParams() {
   return categories.map((category: WPCategory) => ({
     slug: category.slug,
   }));
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const url = new URL(headersList.get("x-url") || "http://localhost");
+
+  const slug = url.pathname.split("/category/")[1]?.split("/")[0];
+  const pageParam = url.searchParams.get("page");
+  const page = pageParam ? Number(pageParam) : 1;
+
+  const categories = await fetchWPCategories();
+  const category = categories.find((cat: WPCategory) => cat.slug === slug);
+
+  if (!category) {
+    return {
+      title: "Categoría no encontrada - RankHogar",
+    };
+  }
+
+  const titleBase = `Artículos sobre ${category.name}`;
+  const title = page > 1 ? `${titleBase} – Página ${page}` : titleBase;
+  const description =
+    category.description ||
+    `Explora los mejores consejos y artículos sobre ${category.name} en RankHogar.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://www.rankhogar.com.co/category/${slug}${
+        page > 1 ? `?page=${page}` : ""
+      }`,
+      siteName: "RankHogar",
+      images: [
+        {
+          url: "/category.png",
+          width: 1200,
+          height: 630,
+          alt: "RankHogar Blog",
+        },
+      ],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/category.png"],
+    },
+  };
 }
 
 interface PageProps {
@@ -48,7 +102,6 @@ export default async function CategoryPage({
   }
 
   // Find current category data
-
 
   return (
     <div className="container mx-auto max-w-6xl">
