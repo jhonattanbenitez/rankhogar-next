@@ -32,10 +32,16 @@ export const CategoryBreadcrumb: React.FC<{
   if (isCategoryPage && currentCategory) {
     const category = categories.find((cat) => cat.slug === currentCategory);
     if (category) {
-      breadcrumbItems.push({
-        label: category.name,
-        href: `/category/${category.slug}`,
-      });
+     breadcrumbItems.push(
+       {
+         label: "Categorías",
+         href: "/category",
+       },
+       {
+         label: category.name,
+         href: `/category/${category.slug}`,
+       }
+     );
     }
   }
 
