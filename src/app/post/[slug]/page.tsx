@@ -1,4 +1,3 @@
-// app/post/[slug]/page.tsx
 import { fetchPostBySlug, fetchWPCategories } from "@/lib/api";
 import { notFound } from "next/navigation";
 import PostContent from "../../components/ui/PostContent";
@@ -10,12 +9,18 @@ import { Metadata } from "next";
 
 export const revalidate = 60;
 
+interface PageProps {
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await Promise.resolve(params); 
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
 
   const post = await fetchPostBySlug(slug);
   if (!post) return {};
@@ -38,15 +43,9 @@ export async function generateMetadata({
   };
 }
 
-
-export default async function SinglePostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-
-  const { slug } = await Promise.resolve(params);
-
+export default async function SinglePostPage({ params }: PageProps) {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
 
   const [post, categories] = await Promise.all([
     fetchPostBySlug(slug),
@@ -58,7 +57,7 @@ export default async function SinglePostPage({
     return notFound();
   }
 
-  const primaryCategory = categories.find((cat: WPCategory) => 
+  const primaryCategory = categories.find((cat: WPCategory) =>
     post.categories?.includes(cat.id)
   );
 
@@ -69,13 +68,14 @@ export default async function SinglePostPage({
         currentCategory={primaryCategory?.slug}
         className="bg-gradient-to-r from-teal-50 to-blue-50"
       />
-      
+
       <article className="prose lg:prose-xl mx-auto">
         <div className="text-gray-600 mb-4">
           Publicado el {formatFullDate(new Date(post.date))}
           {primaryCategory && (
             <span className="ml-2">
-              • Categoría: <span className="font-medium">{primaryCategory.name}</span>
+              • Categoría:{" "}
+              <span className="font-medium">{primaryCategory.name}</span>
             </span>
           )}
         </div>
