@@ -56,6 +56,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-8154105300412752"></meta>
+      </head>
       <body>
         <header className="border-b py-4 px-6 bg-white shadow-sm">
           <div className="container flex items-center justify-between ">
