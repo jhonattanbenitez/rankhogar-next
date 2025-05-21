@@ -22,8 +22,19 @@ export function clientSanitize(dirty: string): string {
       "div",
       "span",
       "br",
+
+      // Table-related tags
+      "table",
+      "thead",
+      "tbody",
+      "tfoot",
+      "tr",
+      "th",
+      "td",
+      "caption",
     ],
     ALLOWED_ATTR: [
+      // Existing attributes
       "href",
       "target",
       "rel", // For links
@@ -32,6 +43,11 @@ export function clientSanitize(dirty: string): string {
       "width",
       "height",
       "class", // For images
+
+      // Table-specific attributes
+      "colspan",
+      "rowspan",
+      "scope",
     ],
     ALLOW_DATA_ATTR: false,
     ALLOW_UNKNOWN_PROTOCOLS: false,

@@ -25,7 +25,12 @@ export default function PostContent({ content }: PostContentProps) {
                  [&>ol]:list-decimal [&&>ol]:pl-6 [&>ol]:my-4
                  [&>blockquote]:border-l-4 [&>blockquote]:border-gray-300 [&>blockquote]:pl-4 [&>blockquote]:py-2 [&>blockquote]:my-6
                  [&>figure]:my-8
-                 [&>img]:rounded-lg [&>img]:my-6"
+                 [&>img]:rounded-lg [&>img]:my-6
+                 [&_table]:w-full [&_table]:border-collapse [&_table]:my-6
+                 [&_th]:border [&_th]:border-gray-300 [&_th]:bg-gray-100 [&_th]:p-2 [&_th]:text-left
+                 [&_td]:border [&_td]:border-gray-300 [&_td]:p-2
+                 [&_figure.wp-block-table]:overflow-x-auto
+                 "
       dangerouslySetInnerHTML={{ __html: sanitizedContent }}
     />
   );
